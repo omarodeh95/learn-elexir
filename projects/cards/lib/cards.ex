@@ -1,7 +1,31 @@
 defmodule Cards do
 
   def create_deck do
-    ["Ace", "Two", "Three"]
+    values = ["Ace", "Two", "Three", "Four", "Five"]
+    suits = ["Spades", "Clubs", "Diamonds", "Hearts"]
+
+    # This is called comprehension, and it is like a map!, it comes from the same concept of immutability
+
+    # The wrong way of doing it (list comprehension)
+    # for suit <- suits  do
+    #   for value <- values do
+    #     "#{value} of #{suit}"
+    #   end
+    # end
+
+    # First approach to solve it is by using a Linked list
+    # cards = for suit <- suits  do
+    #   for value <- values do
+    #     "#{value} of #{suit}"
+    #   end
+    # end
+    # List.flatten(cards)
+
+    # Second approach and it is without using a linked list, using multiple comprehension
+    for value <- values, suit <- suits  do
+        "#{value} of #{suit}"
+    end
+
   end
 
   def shuffle(deck) do
