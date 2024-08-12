@@ -2,7 +2,7 @@ import Config
 
 # Configure your database
 config :discuss, Discuss.Repo,
-  username: "postgres",
+  username: "omarodeh",
   password: "postgres",
   hostname: "localhost",
   database: "discuss_dev",
