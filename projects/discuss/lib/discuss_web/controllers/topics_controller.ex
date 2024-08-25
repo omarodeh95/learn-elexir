@@ -37,7 +37,7 @@ defmodule DiscussWeb.TopicsController do
         conn
         |> redirect(to: ~p"/topics")
       {:error, changeset} ->
-        render conn, :new, layout: false, changeset: changeset
+        render conn, :edit, layout: false, changeset: changeset
     end
   end
 
