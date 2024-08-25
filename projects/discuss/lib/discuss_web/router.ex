@@ -1,4 +1,5 @@
 defmodule DiscussWeb.Router do
+  alias DiscussWeb.TopicsController
   use DiscussWeb, :router
 
   pipeline :browser do
@@ -19,12 +20,14 @@ defmodule DiscussWeb.Router do
 
     get "/", PageController, :home
 
-    get "/topics", TopicsController, :index
-    get "/topics/new", TopicsController, :new
-    post "/topics", TopicsController, :create
-    get "/topics/:id/edit", TopicsController, :edit
-    put "/topics/:id", TopicsController, :update
-    delete "/topics/:id", TopicsController, :delete
+    # get "/topics", TopicsController, :index
+    # get "/topics/new", TopicsController, :new
+    # post "/topics", TopicsController, :create
+    # get "/topics/:id/edit", TopicsController, :edit
+    # put "/topics/:id", TopicsController, :update
+    # delete "/topics/:id", TopicsController, :delete
+
+    resources "/topics", TopicsController
   end
 
   # Other scopes may use custom stacks.
