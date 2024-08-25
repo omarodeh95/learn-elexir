@@ -24,6 +24,23 @@ defmodule DiscussWeb.TopicsController do
     end
   end
 
+  def edit(conn, %{"id" => id}) do
+    changeset = Repo.get!(Topic, id) |> Topic.changeset(%{})
+    render conn, :edit, layout: false, changeset: changeset
+  end
+
+  def update(conn, %{"topic" => topic, "id" => id} = _params) do
+    changeset = Repo.get!(Topic, id) |> Topic.changeset(topic)
+
+    case Repo.update(changeset) do
+      {:ok, _put} -> 
+        conn
+        |> redirect(to: ~p"/topics")
+      {:error, changeset} ->
+        render conn, :new, layout: false, changeset: changeset
+    end
+  end
+
   def delete(conn, %{"id" => id}) do
     {:ok, _topic} =
       Repo.get!(Topic, id)
