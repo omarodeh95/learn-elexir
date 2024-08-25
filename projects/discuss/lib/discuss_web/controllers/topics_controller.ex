@@ -12,7 +12,7 @@ defmodule DiscussWeb.TopicsController do
     render(conn, :new, layout: false, changeset: Topic.changeset(%Topic{}, %{}))
   end
 
-  def create(conn, %{"topic" => topic} = params) do
+  def create(conn, %{"topic" => topic} = _params) do
     changeset = Topic.changeset(%Topic{}, topic)
 
     case Repo.insert(changeset) do
