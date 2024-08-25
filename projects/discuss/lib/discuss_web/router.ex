@@ -1,5 +1,5 @@
 defmodule DiscussWeb.Router do
-  alias DiscussWeb.TopicsController
+  # alias DiscussWeb.TopicsController
   use DiscussWeb, :router
 
   pipeline :browser do
@@ -28,6 +28,7 @@ defmodule DiscussWeb.Router do
     # delete "/topics/:id", TopicsController, :delete
 
     resources "/topics", TopicsController
+
   end
 
   # Other scopes may use custom stacks.
