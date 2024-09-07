@@ -9,6 +9,7 @@ defmodule DiscussWeb.Router do
     plug :put_root_layout, html: {DiscussWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Ueberauth
   end
 
   pipeline :api do
@@ -19,16 +20,13 @@ defmodule DiscussWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-
-    # get "/topics", TopicsController, :index
-    # get "/topics/new", TopicsController, :new
-    # post "/topics", TopicsController, :create
-    # get "/topics/:id/edit", TopicsController, :edit
-    # put "/topics/:id", TopicsController, :update
-    # delete "/topics/:id", TopicsController, :delete
-
     resources "/topics", TopicsController
+  end
 
+  scope "/auth", DiscussWeb do
+    pipe_through :browser
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.
