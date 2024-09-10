@@ -15,6 +15,12 @@ defmodule DiscussWeb.TopicsController do
     render(conn, :new, layout: false, changeset: Topic.changeset(%Topic{}, %{}))
   end
 
+  def show(conn, %{"id" => id} = _params) do
+    topic = Topic |> Repo.get!(id)
+
+    render conn, :show, layout: false, topic: topic
+  end
+
   def create(conn, %{"topic" => topic} = _params) do
     changeset = Topic.changeset(%Topic{}, topic)
 
