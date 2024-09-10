@@ -10,4 +10,11 @@
     <.link navigate={~p"/topics/#{@topic}/edit"}>Edit</.link>
     <.link href={~p"/topics/#{@topic}"} method="delete" data-confirm="Are you sure?"> Delete </.link>
   </div>
+  <div>
+  <%= for comment <- @topic.comments do %>
+    <div>
+      <p><%= comment.content %></p>
+    </div>
+  <% end %>
+  </div>
 </div>
