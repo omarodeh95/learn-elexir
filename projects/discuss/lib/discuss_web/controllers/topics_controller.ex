@@ -1,10 +1,13 @@
 defmodule DiscussWeb.TopicsController do
   use DiscussWeb, :controller
+  import Ecto.Query
   alias Discuss.Topic
   alias Discuss.Repo
 
   def index(conn, _params) do
-    topics = Repo.all(Topic)
+    topics = (from t in Topic, preload: [:comments, :user])
+             |> Repo.all
+
     render conn, :index, layout: false, topics: topics
   end
 
