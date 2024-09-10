@@ -3,12 +3,14 @@ defmodule Discuss.User do
   import Ecto.Changeset
 
   alias Discuss.Topic
+  alias Discuss.Comment
 
   schema "users" do
     field :email, :string
     field :provider, :string
     field :token, :string
     has_many :topics, Topic
+    has_many :comments, Comment
   end
 
   @doc false
