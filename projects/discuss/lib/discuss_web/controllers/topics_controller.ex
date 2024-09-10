@@ -16,7 +16,8 @@ defmodule DiscussWeb.TopicsController do
   end
 
   def show(conn, %{"id" => id} = _params) do
-    topic = Topic |> Repo.get!(id)
+    topic = (from t in Topic, preload: [:comments, :user])
+            |> Repo.get!(id)
 
     render conn, :show, layout: false, topic: topic
   end
