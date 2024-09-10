@@ -1,0 +1,13 @@
+<.header>
+  Topic
+</.header>
+
+<div>
+  <div>
+    <p label="Title"><%= @topic.title %></p>
+  </div>
+  <div>
+    <.link navigate={~p"/topics/#{@topic}/edit"}>Edit</.link>
+    <.link href={~p"/topics/#{@topic}"} method="delete" data-confirm="Are you sure?"> Delete </.link>
+  </div>
+</div>
