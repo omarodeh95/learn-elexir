@@ -1,6 +1,15 @@
 <.header>
   Listing Topics
   <:actions>
+    <%= if !@conn.assigns.user do %>
+        <.link href={~p"/auth/github"}>
+          <.button>Sign In Using Github</.button>
+        </.link>
+    <% else %>
+        <.link href={~p"/auth/signout"}>
+          <.button>Sign Out</.button>
+        </.link>
+    <% end %>
     <.link href={~p"/topics/new"}>
       <.button>New Topic</.button>
     </.link>
