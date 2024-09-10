@@ -8,7 +8,15 @@
 </.header>
 
 <.table id="topics" rows={@topics} row_click={&JS.navigate(~p"/topics/#{&1}")}>
-  <:col :let={topic} label="Title"><%= topic.title %></:col>
+  <:col :let={topic} label="Title"><%= topic.title %>
+  <.table :let={topic} id="comments" rows={topic.comments}}>
+    <:col :let={comment} label="Comments">
+      <ul>
+          <li><%= comment.content %></li> <!-- Adjust according to your comment structure -->
+      </ul>
+    </:col>
+</.table>
+  </:col>
   <:action :let={topic}>
     <div class="sr-only">
       <.link navigate={~p"/topics/#{topic}"}>Show</.link>
