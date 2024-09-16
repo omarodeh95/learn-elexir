@@ -3,6 +3,7 @@ defmodule DiscussWeb.TopicsController do
   import Ecto.Query
   alias Discuss.Topic
   alias Discuss.Repo
+  plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
 
   def index(conn, _params) do
     topics = (from t in Topic, preload: [:comments, :user])
