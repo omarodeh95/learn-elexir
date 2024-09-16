@@ -18,23 +18,27 @@
 
 <.table id="topics" rows={@topics} row_click={&JS.navigate(~p"/topics/#{&1}")}>
   <:col :let={topic} label="Title"><%= topic.title %>
-  <.table :let={topic} id="comments" rows={topic.comments}}>
-    <:col :let={comment} label="Comments">
-      <ul>
-          <li><%= comment.content %></li> <!-- Adjust according to your comment structure -->
-      </ul>
-    </:col>
-</.table>
+    <.table :let={topic} id="comments" rows={topic.comments}}>
+      <:col :let={comment} label="Comments">
+        <ul>
+            <li><%= comment.content %></li> <!-- Adjust according to your comment structure -->
+        </ul>
+      </:col>
+    </.table>
   </:col>
-  <:action :let={topic}>
-    <div class="sr-only">
-      <.link navigate={~p"/topics/#{topic}"}>Show</.link>
-    </div>
-    <.link navigate={~p"/topics/#{topic}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={topic}>
-    <.link href={~p"/topics/#{topic}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
+    <:action :let={topic}>
+      <%= if topic.user_id == @conn.assigns.user.id do %>
+        <div class="sr-only">
+          <.link navigate={~p"/topics/#{topic}"}>Show</.link>
+        </div>
+        <.link navigate={~p"/topics/#{topic}/edit"}>Edit</.link>
+      <% end %>
+    </:action>
+    <:action :let={topic}>
+      <%= if topic.user_id == @conn.assigns.user.id do %>
+        <.link href={~p"/topics/#{topic}"} method="delete" data-confirm="Are you sure?">
+          Delete
+        </.link>
+      <% end %>
+    </:action>
 </.table>
