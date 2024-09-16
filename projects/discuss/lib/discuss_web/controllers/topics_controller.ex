@@ -9,35 +9,36 @@ defmodule DiscussWeb.TopicsController do
     topics = (from t in Topic, preload: [:comments, :user])
              |> Repo.all
 
-    render conn, :index, layout: false, topics: topics
+    render conn, :index, topics: topics
   end
 
   def new(conn, _params) do
-    render(conn, :new, layout: false, changeset: Topic.changeset(%Topic{}, %{}))
+    render(conn, :new, changeset: Topic.changeset(%Topic{user_id: conn.assings.user.id}, %{}))
   end
 
   def show(conn, %{"id" => id} = _params) do
     topic = (from t in Topic, preload: [:comments, :user])
             |> Repo.get!(id)
 
-    render conn, :show, layout: false, topic: topic
+    render conn, :show, topic: topic
   end
 
   def create(conn, %{"topic" => topic} = _params) do
-    changeset = Topic.changeset(%Topic{}, topic)
+    changeset = Topic.changeset(%Topic{user_id: conn.assigns.user.id}, topic)
 
     case Repo.insert(changeset) do
       {:ok, _post} -> 
         conn
         |> redirect(to: ~p"/topics")
       {:error, changeset} ->
-        render conn, :new, layout: false, changeset: changeset
+        IO.inspect(changeset)
+        render conn, :new, changeset: changeset
     end
   end
 
   def edit(conn, %{"id" => id}) do
     changeset = Repo.get!(Topic, id) |> Topic.changeset(%{})
-    render conn, :edit, layout: false, changeset: changeset
+    render conn, :edit, changeset: changeset
   end
 
   def update(conn, %{"topic" => topic, "id" => id} = _params) do
@@ -48,7 +49,7 @@ defmodule DiscussWeb.TopicsController do
         conn
         |> redirect(to: ~p"/topics")
       {:error, changeset} ->
-        render conn, :edit, layout: false, changeset: changeset
+        render conn, :edit, changeset: changeset
     end
   end
 
