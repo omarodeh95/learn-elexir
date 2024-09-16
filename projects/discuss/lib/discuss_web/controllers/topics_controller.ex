@@ -4,6 +4,7 @@ defmodule DiscussWeb.TopicsController do
   alias Discuss.Topic
   alias Discuss.Repo
   plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
     topics = (from t in Topic, preload: [:comments, :user])
@@ -60,6 +61,18 @@ defmodule DiscussWeb.TopicsController do
 
     conn
     |> redirect(to: ~p"/topics")
+  end
+
+  defp check_topic_owner(conn, _params) do
+    %{params: %{"id" => id}} = conn
+    if Repo.get!(Topic, id).user_id== conn.assigns.user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not the owner of this Topic")
+      |> redirect(to: ~p"/topics")
+      |> halt()
+    end
   end
 end
 
