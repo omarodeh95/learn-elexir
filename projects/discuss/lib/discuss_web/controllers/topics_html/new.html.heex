@@ -1,8 +1,18 @@
-<.header>
-  New Topic
-  <:subtitle>Use this form to manage topic records in your database.</:subtitle>
+<.header class="bg-gray-800 text-white p-4 rounded-t-lg">
+  <h1 class="text-2xl font-bold">New Topic</h1>
+  <p class="text-sm text-gray-400 mt-1">Use this form to manage topic records in your database.</p>
 </.header>
 
-<.topic_form changeset={@changeset} action={~p"/topics"} />
+<div class="p-6 bg-white rounded-lg shadow-md">
+  <.topic_form changeset={@changeset} action={~p"/topics"} />
+</div>
 
-<.back navigate={~p"/topics"}>Back to topics</.back>
+<div class="mt-6">
+  <.back 
+    navigate={~p"/topics"} 
+    class="text-blue-600 hover:underline font-medium"
+  >
+    Back to topics
+  </.back>
+</div>
+

@@ -1,44 +1,36 @@
-<.header>
-  Listing Topics
-  <:actions>
-    <%= if !@conn.assigns.user do %>
-        <.link href={~p"/auth/github"}>
-          <.button>Sign In Using Github</.button>
-        </.link>
-    <% else %>
-        <.link href={~p"/auth/signout"}>
-          <.button>Sign Out</.button>
-        </.link>
-    <% end %>
+<.header class="flex items-center justify-between mb-6 border-b pb-4 border-gray-300">
+  <h1 class="text-2xl font-semibold text-gray-800">Listing Topics</h1>
+  <div class="flex space-x-4">
+    <!-- New Topic Button -->
     <.link href={~p"/topics/new"}>
-      <.button>New Topic</.button>
+      <.button class="bg-black text-white hover:bg-gray-800">New Topic</.button>
     </.link>
-  </:actions>
+  </div>
 </.header>
 
-<.table id="topics" rows={@topics} row_click={&JS.navigate(~p"/topics/#{&1}")}>
-  <:col :let={topic} label="Title"><%= topic.title %>
-    <.table :let={topic} id="comments" rows={topic.comments}}>
-      <:col :let={comment} label="Comments">
-        <ul>
-            <li><%= comment.content %></li> <!-- Adjust according to your comment structure -->
-        </ul>
-      </:col>
-    </.table>
+<!-- Topics Table -->
+<.table id="topics" rows={@topics} row_click={&JS.navigate(~p"/topics/#{&1}")} class="w-full bg-white shadow-sm rounded-lg border border-gray-300">
+  <!-- Topics Column -->
+  <:col :let={topic} label="Title" class="p-4 border-b border-gray-200">
+    <div class="text-gray-800 font-medium"><%= topic.title %></div>
   </:col>
-    <:action :let={topic}>
-      <%= if topic.user == @conn.assigns.user do %>
-        <div class="sr-only">
-          <.link navigate={~p"/topics/#{topic}"}>Show</.link>
-        </div>
-        <.link navigate={~p"/topics/#{topic}/edit"}>Edit</.link>
-      <% end %>
-    </:action>
-    <:action :let={topic}>
-      <%= if topic.user == @conn.assigns.user do %>
-        <.link href={~p"/topics/#{topic}"} method="delete" data-confirm="Are you sure?">
-          Delete
-        </.link>
-      <% end %>
-    </:action>
+  
+  <!-- Action Buttons -->
+  <:action :let={topic} class="p-4 border-b border-gray-200">
+    <%= if topic.user == @conn.assigns.user do %>
+      <div class="flex space-x-2">
+        <.link navigate={~p"/topics/#{topic}"} class="text-gray-600 hover:text-gray-800">Show</.link>
+        <.link navigate={~p"/topics/#{topic}/edit"} class="text-gray-600 hover:text-gray-800">Edit</.link>
+      </div>
+    <% end %>
+  </:action>
+  
+  <:action :let={topic} class="p-4 border-b border-gray-200">
+    <%= if topic.user == @conn.assigns.user do %>
+      <.link href={~p"/topics/#{topic}"} method="delete" data-confirm="Are you sure?" class="text-red-600 hover:text-red-800">
+        Delete
+      </.link>
+    <% end %>
+  </:action>
 </.table>
+

@@ -1,8 +1,17 @@
-<.header>
-  New Topic
-  <:subtitle>Use this form to manage topic records in your database.</:subtitle>
+<.header class="text-center mb-8">
+  <h1 class="text-3xl font-bold text-gray-800">New Topic</h1>
+  <p class="text-gray-600 mt-2">Use this form to manage topic records in your database.</p>
 </.header>
 
-<.topic_form changeset={@changeset} action={~p"/topics/#{@changeset.data}"} />
+<!-- Topic Form Component -->
+<.topic_form changeset={@changeset} action={~p"/topics/#{@changeset.data}"}
+  class="bg-white p-6 border border-gray-300 rounded shadow-md"
+>
+  <!-- The form styles should already be defined inside the topic_form component as discussed previously -->
+</.topic_form>
 
-<.back navigate={~p"/topics"}>Back to topics</.back>
+<!-- Back Button -->
+<.back navigate={~p"/topics"} class="inline-block mt-4 text-gray-600 hover:text-gray-800 underline">
+  Back to topics
+</.back>
+

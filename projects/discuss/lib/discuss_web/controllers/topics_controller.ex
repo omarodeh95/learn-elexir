@@ -14,7 +14,7 @@ defmodule DiscussWeb.TopicsController do
   end
 
   def new(conn, _params) do
-    render(conn, :new, changeset: Topic.changeset(%Topic{user_id: conn.assings.user.id}, %{}))
+    render(conn, :new, changeset: Topic.changeset(%Topic{user_id: conn.assigns.user.id}, %{}))
   end
 
   def show(conn, %{"id" => id} = _params) do
@@ -25,7 +25,7 @@ defmodule DiscussWeb.TopicsController do
   end
 
   def create(conn, %{"topic" => topic} = _params) do
-    changeset = conn.assings.user
+    changeset = conn.assigns.user
       |> Ecto.build_assoc(:topics)
       |> Topic.changeset(topic)
 

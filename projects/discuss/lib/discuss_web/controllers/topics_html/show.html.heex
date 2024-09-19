@@ -2,19 +2,62 @@
   Topic
 </.header>
 
-<div>
-  <div>
-    <p label="Title"><%= @topic.title %></p>
+<div class="mb-4">
+  <!-- Input Field for Comment -->
+  <label for="comment-input" class="block text-gray-700 text-sm font-bold mb-2">Add a Comment</label>
+  <textarea 
+    id="comment-input" 
+    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+    rows="4" 
+    placeholder="Write your comment here..."
+  ></textarea>
+</div>
+
+<div class="mb-6">
+  <!-- Button -->
+  <button 
+    id="wsbutton" 
+    class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+  >
+    Add Comment
+  </button>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    window.createSocket(<%= @topic.id %>);
+  });
+</script>
+
+<div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+  <!-- Topic Title -->
+  <div class="mb-4">
+    <p class="text-xl font-semibold text-gray-900"><%= @topic.title %></p>
   </div>
-  <div>
-    <.link navigate={~p"/topics/#{@topic}/edit"}>Edit</.link>
-    <.link href={~p"/topics/#{@topic}"} method="delete" data-confirm="Are you sure?"> Delete </.link>
+
+  <div class="mb-4 flex space-x-4">
+    <!-- Links -->
+    <.link 
+      navigate={~p"/topics/#{@topic}/edit"} 
+      class="text-gray-800 hover:underline"
+    >
+      Edit
+    </.link>
+    <.link 
+      href={~p"/topics/#{@topic}"} 
+      method="delete" 
+      data-confirm="Are you sure?" 
+      class="text-red-600 hover:underline"
+    >
+      Delete
+    </.link>
   </div>
+
+  <!-- Comment List -->
   <div>
-  <%= for comment <- @topic.comments do %>
-    <div>
-      <p><%= comment.content %></p>
-    </div>
-  <% end %>
+    <ul id="comment-list" class="divide-y divide-gray-200">
+      <!-- Comments will be dynamically added here -->
+    </ul>
   </div>
 </div>
+

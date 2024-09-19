@@ -1,9 +1,22 @@
-<.simple_form :let={f} for={@changeset} action={@action}>
-  <.error :if={@changeset.action}>
+<.simple_form :let={f} for={@changeset} action={@action} class="space-y-6">
+  <!-- Error Message -->
+  <.error :if={@changeset.action} class="text-red-600 font-medium">
     Oops, something went wrong! Please check the errors below.
   </.error>
-  <.input field={f[:title]} type="text" label="Title" />
+  
+  <!-- Title Input Field -->
+  <.input 
+    field={f[:title]} 
+    type="text" 
+    label="Title" 
+    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600" 
+  />
+  
+  <!-- Actions Section -->
   <:actions>
-    <.button>Save Topic</.button>
+    <.button class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600">
+      Save Topic
+    </.button>
   </:actions>
 </.simple_form>
+
