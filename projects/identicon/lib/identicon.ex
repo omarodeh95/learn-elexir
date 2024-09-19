@@ -32,9 +32,9 @@ defmodule Identicon do
       vertical = div(index, 5) * 50
 
       top_left = {horizontal, vertical}
-      top_right = {horizontal + 50, vertical + 50}
+      bot_right = {horizontal + 50, vertical + 50}
 
-      {top_left, top_right}
+      {top_left, bot_right}
     end
 
     %Identicon.Image{image | pixel_map: pixel_map}
