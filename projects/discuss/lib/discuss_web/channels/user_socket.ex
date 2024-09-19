@@ -30,7 +30,7 @@ defmodule DiscussWeb.UserSocket do
       {:ok, user_id} ->
         {:ok, assign(socket, :user, Repo.get!(User, user_id))}
       {:error, _message} ->
-        :error
+        {:ok, socket}
     end
   end
 
