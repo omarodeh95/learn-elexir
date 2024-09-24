@@ -5,4 +5,9 @@
 ### Projects
 * Cards - Elixir coding
 * Identicon - Elixir coding
+* Calculator Generic Server - Elixir coding
+* Calculator Message Passing - Elixir coding
+* Macros - Elixir coding
+* Identicon - Elixir coding
+* Tail Calls - Elixir coding
 * Discuss - Phoenix MVC App
