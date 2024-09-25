@@ -2,7 +2,7 @@
 
 **This repo is personal to explore and learn Elixir and Phoenix**
 
-### Projects
+### Topics
 * Cards - Elixir coding
 * Identicon - Elixir coding
 * Calculator Generic Server - Elixir coding
