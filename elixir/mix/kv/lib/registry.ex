@@ -7,7 +7,9 @@ defmodule KV.Registry do
   Starts the registry
   """
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, :ok, opts)
+    # simple the table name is passed as a keyword list, but not as init state arg
+    server = Keyword.fetch!(opts, :name)
+    GenServer.start_link(__MODULE__, server, opts)
   end
 
   @doc """
@@ -15,8 +17,13 @@ defmodule KV.Registry do
 
   Returns {:ok, pid} if the bucket exists, returns :error otherwise
   """
-  def lookup(server, name) do
-    GenServer.call(server, {:lookup, name})
+  def lookup(table, name) do
+    case :ets.lookup(table, name) do
+      [{^name, pid}] -> {:ok, pid}
+      [] -> :error
+    end
+
+    # GenServer.call(table, {:lookup, name})
   end
 
   @doc """
@@ -25,42 +32,37 @@ defmodule KV.Registry do
   Ensures that there is a bucket associated with the given 'name' in 'server'
   """
   def create(server, name) do
-    GenServer.cast(server, {:create, name})
+    GenServer.call(server, {:create, name})
   end
-
 
   # Server code
 
   @impl true
-  def init(:ok) do
-    {:ok, {%{}, %{}}}
+  def init(table) do
+    names = :ets.new(table, [:named_table, read_concurrency: true])
+    refs = %{}
+    {:ok, {names, refs}}
   end
 
   @impl true
-  def handle_call({:lookup, name}, _from, {names, _refs} = state) do
-    {:reply, Map.fetch(names, name), state}
-  end
+  def handle_call({:create, name}, _from, {names, refs}) do
+    case lookup(names, name) do
+      {:ok, pid} ->
+        {:reply, pid, names}
 
-  @impl true
-  def handle_cast({:create, name}, {names, refs} = state) do
-    if  Map.has_key?(names, name) do
-      # do nothing
-      {:noreply, state}
-    else
-      # create new bucket
-      # {:ok, bucket} = KV.Bucket.start_link([])
-      {:ok, bucket} = DynamicSupervisor.start_child(KV.BucketSupervisor, KV.Bucket)
-      ref = Process.monitor(bucket)
-      refs = Map.put(refs, ref, name)
-      names = Map.put(names, name, bucket)
-      {:noreply, {names, refs}}
+      :error ->
+        {:ok, pid} = DynamicSupervisor.start_child(KV.BucketSupervisor, KV.Bucket)
+        ref = Process.monitor(pid)
+        refs = Map.put(refs, ref, name)
+        :ets.insert(names, {name, pid})
+        {:reply, pid, {names, refs}}
     end
   end
 
   @impl true
   def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
     {name, refs} = Map.pop(refs, ref)
-    names = Map.delete(names, name)
+    :ets.delete(names, name)
     {:noreply, {names, refs}}
   end
 
