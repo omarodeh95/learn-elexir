@@ -7,8 +7,10 @@ defmodule KVServer.Application do
 
   @impl true
   def start(_type, _args) do
+    server_port = String.to_integer(System.get_env("PORT") || "4040")
+
     children = [
-      {Task, fn -> KVServer.accept(4040) end}
+      {Task, fn -> KVServer.accept(server_port) end}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
