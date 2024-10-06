@@ -43,6 +43,11 @@ defmodule KVServer do
           err
       end
 
+    msg =
+      with {:ok, data} <- read_line(socket),
+           {:ok, command} <- KVServer.Command.parse(data),
+           do: KVServer.Command.run(command)
+
     write_line(socket, msg)
     serve(socket)
   end
