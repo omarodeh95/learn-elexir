@@ -10,6 +10,7 @@ defmodule KVServer.Application do
     server_port = String.to_integer(System.get_env("PORT") || "4040")
 
     children = [
+      {Task.Supervisor, name: KVServer.TaskSupervisor},
       {Task, fn -> KVServer.accept(server_port) end}
     ]
 
