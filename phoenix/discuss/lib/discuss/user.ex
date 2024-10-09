@@ -11,6 +11,8 @@ defmodule Discuss.User do
     field :token, :string
     has_many :topics, Topic
     has_many :comments, Comment
+
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
@@ -20,4 +22,3 @@ defmodule Discuss.User do
     |> validate_required([:email, :provider, :token])
   end
 end
-
