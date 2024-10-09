@@ -19,6 +19,7 @@ defmodule HelloWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    resources "/products", ProductController
 
     get "/hello", HelloController, :index
     get "/hello/:messenger", HelloController, :show
