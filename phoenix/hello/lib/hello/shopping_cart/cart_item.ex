@@ -5,8 +5,9 @@ defmodule Hello.ShoppingCart.CartItem do
   schema "cart_items" do
     field :price_when_carted, :decimal
     field :quantity, :integer
-    field :cart_id, :id
-    field :product_id, :id
+
+    belongs_to :cart, Hello.ShoppingCart.Cart
+    belongs_to :product, Hello.Catalog.Product
 
     timestamps(type: :utc_datetime)
   end
