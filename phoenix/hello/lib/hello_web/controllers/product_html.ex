@@ -10,4 +10,24 @@ defmodule HelloWeb.ProductHTML do
   attr :action, :string, required: true
 
   def product_form(assigns)
+
+  def category_opts(changeset) do
+    existing_ids = 
+      changeset
+      |> Ecto.Changeset.get_change(:categories, [])
+      |> Enum.map(& &1.data.id)
+
+    for cat <- Hello.Catalog.list_categories(),
+      do: [key: cat.title, value: cat.id, selected: cat.id in existing_ids]
+  end
+
+  def category_opts(changeset) do
+    existing_ids =
+      changeset
+      |> Ecto.Changeset.get_change(:categories, [])
+      |> Enum.map(& &1.data.id)
+
+    for cat <- Hello.Catalog.list_categories(),
+      do: [key: cat.id, value: cat.value, selected: cat in existing_ids]
+  end
 end

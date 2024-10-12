@@ -13,6 +13,12 @@
   <:item title="Description"><%= @product.description %></:item>
   <:item title="Price"><%= @product.price %></:item>
   <:item title="Views"><%= @product.views %></:item>
+  <:item title="Categories">
+  <%= for cat <- @product.categories do%>
+    <%= cat.title %>
+    <br/>
+  <% end %>
+  </:item>
 </.list>
 
 <.back navigate={~p"/products"}>Back to products</.back>
