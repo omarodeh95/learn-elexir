@@ -24,4 +24,19 @@ defmodule Hello.ShoppingCartFixtures do
 
     cart
   end
+
+  @doc """
+  Generate a cart_item.
+  """
+  def cart_item_fixture(attrs \\ %{}) do
+    {:ok, cart_item} =
+      attrs
+      |> Enum.into(%{
+        price_when_carted: "120.5",
+        quantity: 42
+      })
+      |> Hello.ShoppingCart.create_cart_item()
+
+    cart_item
+  end
 end
