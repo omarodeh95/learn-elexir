@@ -1,5 +1,5 @@
 defmodule Hello.Orders.Order do
-  alias Hello.Orders.LineItem
+  # alias Hello.Orders.LineItem
   use Ecto.Schema
   import Ecto.Changeset
 
