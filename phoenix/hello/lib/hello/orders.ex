@@ -7,6 +7,7 @@ defmodule Hello.Orders do
   alias Hello.Repo
 
   alias Hello.Orders.Order
+  alias Hello.ShoppingCart
 
   @doc """
   Returns the list of orders.
@@ -35,7 +36,11 @@ defmodule Hello.Orders do
       ** (Ecto.NoResultsError)
 
   """
-  def get_order!(id), do: Repo.get!(Order, id)
+  def get_order!(user_uuid, id) do
+    Order
+    |> Repo.get_by!(id: id, user_uuid: user_uuid)
+    |> Repo.preload([line_items: [:product]])
+  end
 
   @doc """
   Creates a order.
@@ -196,5 +201,29 @@ defmodule Hello.Orders do
   """
   def change_line_item(%LineItem{} = line_item, attrs \\ %{}) do
     LineItem.changeset(line_item, attrs)
+  end
+
+  def complete_order(%ShoppingCart.Cart{} = cart) do
+    line_items = Enum.map(cart.items, fn item ->
+      %{product_id: item.product_id, price: item.product.price, quantity: item.quantity}
+    end)
+
+    order =
+      Ecto.Changeset.change(%Order{},
+        user_uuid: cart.user_uuid,
+        total_price: ShoppingCart.total_cart_price(cart),
+        line_items: line_items
+      )
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:order, order)
+    |> Ecto.Multi.run(:prune_cart, fn _repo, _changes ->
+      ShoppingCart.prune_cart_items(cart)
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{order: order}} -> {:ok, order}
+      {:error, name, value, _changes_so_far} -> {:error, {name, value}}
+    end
   end
 end
