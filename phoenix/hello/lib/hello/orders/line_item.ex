@@ -5,8 +5,9 @@ defmodule Hello.Orders.LineItem do
   schema "order_line_items" do
     field :price, :decimal
     field :quantity, :integer
-    field :order_id, :id
-    field :product_id, :id
+
+    belongs_to :order, Hello.Orders.Order
+    belongs_to :product, Hello.Catalog.Product
 
     timestamps(type: :utc_datetime)
   end

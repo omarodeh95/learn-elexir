@@ -1,10 +1,14 @@
 defmodule Hello.Orders.Order do
+  alias Hello.Orders.LineItem
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "orders" do
     field :user_uuid, Ecto.UUID
     field :total_price, :decimal
+
+    has_many :line_items, Hello.Orders.LineItem
+    has_many :products, through: [:line_items, :product]
 
     timestamps(type: :utc_datetime)
   end
