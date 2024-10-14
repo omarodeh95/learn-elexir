@@ -270,4 +270,13 @@ defmodule Hello.ShoppingCart do
       |> Decimal.add(acc)
     end)
   end
+
+  def prune_cart_items(cart) do
+    {_, _} = Repo.delete_all(
+      from ci in CartItem,
+      where: ci.cart_id == ^cart.id
+    )
+
+    {:ok, reload_cart(cart)}
+  end
 end
