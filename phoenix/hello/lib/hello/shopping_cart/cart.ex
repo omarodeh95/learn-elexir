@@ -1,5 +1,5 @@
 defmodule Hello.ShoppingCart.Cart do
-  alias Hello.ShoppingCartFixtures
+  # alias Hello.ShoppingCartFixtures
   use Ecto.Schema
   import Ecto.Changeset
 
