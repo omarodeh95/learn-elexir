@@ -46,6 +46,11 @@ defmodule HelloWeb.Router do
     get "/", PageController, :home
     resources "/products", ProductController
 
+    resources "/cart_items", CartItemController, only: [:create, :delete]
+
+    get "/cart", CartController, :show
+    put "/cart", CartController, :update
+
     get "/hello", HelloController, :index
     get "/hello/:messenger", HelloController, :show
   end
